@@ -1,0 +1,28 @@
+{
+  "name": "brainiac-app",
+  "version": "1.0.0",
+  "description": "Brainiac web application created by Shana Cheng, Joseph Deguzman, and Darren Jiang",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "server": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shanacheng/brainiac-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shanacheng/brainiac-app/issues"
+  },
+  "homepage": "https://github.com/shanacheng/brainiac-app#readme",
+  "dependencies": {
+    "concurrently": "^6.0.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
