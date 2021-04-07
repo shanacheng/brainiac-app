@@ -1,8 +1,8 @@
 const {ApolloServer} = require('apollo-server-express');
-const {typeDefs} = require('./src/typedefs');
-const {resolvers} = require('./src/resolvers');
+const {typeDefs} = require('./typedefs');
+const {resolvers} = require('./resolvers');
 const {MongoClient} = require('mongodb').MongoClient;
-const uri = require('./config/keys').mongoURI;
+const uri = require('./../config/keys').mongoURI;
 let db;
 const testserver = new ApolloServer({
     typeDefs,
