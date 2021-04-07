@@ -1,6 +1,14 @@
+const {db} = require('./testingQL');
+
 const resolvers = {
     Query: {
-        hello: () => "hello"
+        hello: () => {
+            return "hello";
+        },
+        users: async() => {
+            let Users = await db.collection('Users');
+            return Users;
+        }
     }
 }
 
