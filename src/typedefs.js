@@ -5,6 +5,7 @@ const typeDefs = gql`
         hello: String!
         getUsers: [User]
         getPlatforms: [Platform]
+        getUser(username: String!): User
     }
     type Mutation{
         createUser(

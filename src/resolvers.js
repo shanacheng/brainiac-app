@@ -8,6 +8,9 @@ const resolvers = {
         },
         getPlatforms: async() => {
             return await Platform.find({})
+        },
+        async getUser(parent, args, context, info) {
+            return await User.findOne({username: args.username});
         }
     },
     Mutation: {
