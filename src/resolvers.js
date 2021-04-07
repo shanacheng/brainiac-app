@@ -1,15 +1,17 @@
-const {db} = require('./testingQL');
-
+const {User} = require("./models/User");
 const resolvers = {
     Query: {
-        hello: () => {
-            return "hello";
-        },
-        users: async() => {
-            let Users = await db.collection('Users');
-            return Users;
-        }
-    }
-}
+        hello: () => "hello"
+    },
+    Mutation: {
+        createUser: (_, {name, username, email, password}) => {
+            user = new User({
+                name: name,
+                username: username,
+                email: email,
+                password: password
+            });
+            return user.save();
 
+const {db} = require('./testingQL');
 exports.resolvers = resolvers;
