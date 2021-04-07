@@ -12,8 +12,6 @@ const resolvers = {
                 password: password
             });
             return user.save();
-        }
-    }
-}
 
+const {db} = require('./testingQL');
 exports.resolvers = resolvers;
