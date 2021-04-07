@@ -2,9 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const {ApolloServer, gql} = require('apollo-server-express');
 const {typeDefs} = require('./src/typedefs')
-// const {resolvers} = require('./src/resolvers')
+const {resolvers} = require('./src/resolvers')
 
-resolvers = {}
 const app = express();
 app.use(express.json())
 

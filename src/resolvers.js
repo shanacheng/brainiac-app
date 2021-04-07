@@ -2,11 +2,13 @@ const { Platform } = require("./models/Platform");
 const {User} = require("./models/User");
 const resolvers = {
     Query: {
-        // hello: () => "hello",
-        // getUsers: async() => {
-        //     let Users = await db.collection('Users');
-        //     return Users;
-        // }
+        hello: () => "hello",
+        getUsers: async() => {
+            return await User.find({})
+        },
+        getPlatforms: async() => {
+            return await Platform.find({})
+        }
     },
     Mutation: {
         createUser: (_, {name, username, email, password}) => {
