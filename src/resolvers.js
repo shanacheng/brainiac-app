@@ -1,7 +1,11 @@
 const {User} = require("./models/User");
 const resolvers = {
     Query: {
-        hello: () => "hello"
+        hello: () => "hello",
+        users: async() => {
+            let Users = await db.collection('Users');
+            return Users;
+        }
     },
     Mutation: {
         createUser: (_, {name, username, email, password}) => {
