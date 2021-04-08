@@ -3,14 +3,17 @@ const {User} = require("./models/User");
 const resolvers = {
     Query: {
         hello: () => "hello",
-        getUsers: async() => {
+        async getUsers() {
             return await User.find({})
         },
-        getPlatforms: async() => {
+        async getPlatforms() {
             return await Platform.find({})
         },
         async getUser(parent, args, context, info) {
             return await User.findOne({username: args.username});
+        },
+        async getPlatform(parent, args, context, info) {
+            return await Platform.findOne({platformID: args.platformID});
         }
     },
     Mutation: {
@@ -37,8 +40,17 @@ const resolvers = {
                 games: games
             });
             // need to add update for user, need to do
+            // user = User.findOne({username: creatorName});
+            // user.createdPlatforms.push(platformID);
+            // user.save();
+            User.findOneAndUpdate({username: creatorName},{"$push": {createdPlatforms: platformID}}, 
+            function(error, success) {
+                if (error) {console.log(error)}
+                else {console.log(success)}
+            });
+            // User.findOneAndUpdate({username: creatorName}, {"$push": {"createdPlatforms": platformID}}, done);
             return platform.save();
-        }
+        },
     }
 }
 const {db} = require('./testingQL');

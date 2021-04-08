@@ -6,7 +6,9 @@ const typeDefs = gql`
         getUsers: [User]
         getPlatforms: [Platform]
         getUser(username: String!): User
+        getPlatform(platformID: Int!): Platform
     }
+
     type Mutation{
         createUser(
             name: String!
@@ -22,6 +24,7 @@ const typeDefs = gql`
             games: [Int]
             ): Platform!
     }
+
     type User{
         id: ID!
         username: String!
@@ -34,12 +37,30 @@ const typeDefs = gql`
         bookmarkedPlatforms: [Int]
         playedPlatforms: [Int]
     }
+
     type Platform{
-        platformID: Int,
-        name: String,
-        description: String,
-        creatorName: String,
+        platformID: Int!
+        name: String!
+        description: String!
+        creatorName: String!
         games: [Int]
+    }
+
+    type Game{
+        gameID: Int!
+        name: String!
+        description: String!
+        activities: [Activity]
+        tags: [String]
+        dateLastEdited: Int
+    }
+
+    type Activity{
+        type: String!
+        data: [[String]]
+        colors: [String]
+        music: String!
+        time: Int
     }
 `;
 
