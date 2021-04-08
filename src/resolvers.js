@@ -23,7 +23,7 @@ const resolvers = {
                 username: username,
                 email: email,
                 password: password,
-                profiiePicture: "",
+                profilePicture: "",
                 createdPlatforms: [],
                 bookmarkedPlatforms: [],
                 playedPlatforms: []

@@ -12,4 +12,5 @@ const User = mongoose.model("User",
     }
 );
 
+
 exports.User = User;
