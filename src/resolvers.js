@@ -45,7 +45,7 @@ const resolvers = {
                 description: description,
                 creatorName: creatorName,
                 games: [],
-                private: True
+                private: true
             });
             User.findOneAndUpdate({username: creatorName},{"$push": {createdPlatforms: platformID}}, 
             function(error, success) {
@@ -53,6 +53,19 @@ const resolvers = {
                 else {console.log(success)}
             });
             return platform.save();
+        },
+
+        deletePlatform: (_, {username, platformID}) => {
+            Platform.findOneAndDelete({platformID: platformID}, 
+            function(error, success) {
+                if (error) {console.log(error)}
+                else {console.log(success)}
+            });
+            User.findOneAndUpdate({username: username}, {"$pull" : {createdPlatforms: platformID}},
+            function(error, success) {
+                if (error) {console.log(error)}
+                else {console.log(success)}
+            });
         },
 
         bookmarkPlatform: (_, {username,platformID}) => {
@@ -64,13 +77,30 @@ const resolvers = {
             return platformID;
         },
 
+        addPlayedPlatform: (_, {username,platformID}) => {
+            User.findOneAndUpdate({username: username}, {"$push": {playedPlatforms: platformID}},
+            function(error, success) {
+                if (error) {console.log(error)}
+                else {console.log(success)}
+            });
+            return platformID;
+        },
+
         saveChanges: (_, {email, name, username}) => {
-            User.findOneAndUpdate({email: email}, {"$set" : {name: name, username: username}});
+            User.findOneAndUpdate({email: email}, {"$set" : {name: name, username: username}}, 
+            function(error, success) {
+                if (error) {console.log(error)}
+                else {console.log(success)}
+            });
             return "";
         },
 
         confirmPasswordChange: (_, {password}) => {
-            User.findOneAndUpdate({email: email}, {"$set" : {password: password}});
+            User.findOneAndUpdate({email: email}, {"$set" : {password: password}},
+            function(error, success) {
+                if (error) {console.log(error)}
+                else {console.log(success)}
+            });
             return "";
         },
 
@@ -84,12 +114,25 @@ const resolvers = {
                 parentPlatform: parentPlatform,
                 pictures: []
             });
-            Platform.findOneAndUpdate({platformID: parentPlatform}, {"push": {games: gameID}},
+            Platform.findOneAndUpdate({platformID: parentPlatform}, {"$push": {games: gameID}},
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}
             });
             return game.save();
+        },
+
+        deleteGame: (_, {platformID, gameID}) => {
+            Game.findOneAndDelete({gameID: gameID}, 
+            function(error, success) {
+                if (error) {console.log(error)}
+                else {console.log(success)}
+            });
+            Platform.findOneAndUpdate({platformID: platformID}, {"$pull" : {gameID: gameID}},
+            function(error, success) {
+                if (error) {console.log(error)}
+                else {console.log(success)}
+            });
         },
 
         addActivity: (_, {activityID, type, gameID}) => {
@@ -101,12 +144,22 @@ const resolvers = {
                 music: "", 
                 time: 0
             });
-            Platform.findOneAndUpdate({gameID: gameID}, {"push": {activities: activityID}},
+            Game.findOneAndUpdate({gameID: gameID}, {"$push": {activities: activityID}},
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}
             });
             return activity.save();
+        },
+
+        addActivityCard: (_, {activityID, card1, card2, card3, card4, card5}) => {
+            card = [card1, card2, card3, card4, card5];
+            Activity.findOneAndUpdate({activityID: activityID}, {"$push": {data: card}},
+            function(error, success) {
+                if (error) {console.log(error)}
+                else {console.log(success)}
+            });
+            return card
         }
     }
 }

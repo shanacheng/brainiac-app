@@ -24,6 +24,10 @@ const typeDefs = gql`
             creatorName: String!
             games: [Int]
             ): Platform!
+        deletePlatform(
+            platformID:Int!
+            username: String!
+        ): String
         createGame(
             gameID: Int!
             name: String!
@@ -31,21 +35,39 @@ const typeDefs = gql`
             creatorName: String!
             parentPlatform: Int!
         ): Game!
+        deleteGame(
+            platformID: Int!
+            gameID: Int!
+        ): String
         addActivity(
             activityID: Int!
             type: String!
+            gameID: Int!
         ): Activity!
         bookmarkPlatform(
             username: String!
             platformID: Int!
         ): Int!
+        addPlayedPlatform(
+            username: String!
+            platformID: Int!
+        ): Int!
         saveChanges(
+            email: String!
             username: String
             name: String
         ): String
         confirmPasswordChange(
             password: String
         ):String
+        addActivityCard(
+            activityID: Int!
+            card1: String!
+            card2: String!
+            card3: String
+            card4: String
+            card5: String
+        ):[String]
     }
 
     type User{
@@ -74,6 +96,7 @@ const typeDefs = gql`
         name: String!
         description: String!
         activities: [Activity]
+        creatorName: String!
         tags: [String]
         dateLastEdited: Int
     }
