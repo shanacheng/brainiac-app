@@ -30,6 +30,7 @@ const resolvers = {
                 email: email,
                 password: password,
                 profilePicture: "",
+                badges: [],
                 createdPlatforms: [],
                 bookmarkedPlatforms: [],
                 playedPlatforms: []
@@ -45,7 +46,8 @@ const resolvers = {
                 description: description,
                 creatorName: creatorName,
                 games: [],
-                private: true
+                private: true,
+                tags: []
             });
             User.findOneAndUpdate({username: creatorName},{"$push": {createdPlatforms: platformID}}, 
             function(error, success) {
@@ -53,6 +55,15 @@ const resolvers = {
                 else {console.log(success)}
             });
             return platform.save();
+        },
+
+        editPlatform: (_, {platformID, name, description, creatorName, private, tags}) => {
+            Platform.findOneAndUpdate({platformID: platformID, creatorName: creatorName}, {"$set" : {name: name, description: description, private: private, tags: tags}}, 
+            function(error, success) {
+                if (error) {console.log(error)}
+                else {console.log(success)}
+            });
+            return "";
         },
 
         deletePlatform: (_, {username, platformID}) => {
@@ -112,7 +123,8 @@ const resolvers = {
                 activities: [],
                 creatorName: creatorName,
                 parentPlatform: parentPlatform,
-                pictures: []
+                pictures: [],
+                tags: []
             });
             Platform.findOneAndUpdate({platformID: parentPlatform}, {"$push": {games: gameID}},
             function(error, success) {
@@ -120,6 +132,15 @@ const resolvers = {
                 else {console.log(success)}
             });
             return game.save();
+        },
+
+        editGame: (_, {gameID, parentPlatform, name, description, creatorName, private, tags}) => {
+           Game.findOneAndUpdate({gameID: gameID, parentPlatform: parentPlatform, creatorName: creatorName}, {"$set" : {name: name, description: description, private: private, tags: tags}}, 
+            function(error, success) {
+                if (error) {console.log(error)}
+                else {console.log(success)}
+            });
+            return "";
         },
 
         deleteGame: (_, {platformID, gameID}) => {
@@ -170,6 +191,22 @@ const resolvers = {
                 else {console.log(success)}
             });
         },
+
+        editMusic: (_, {activityID, music}) => {
+            Activity.findOneAndUpdate({activityID: activityID}, {"$set": {music: music}},
+            function(error, success) {
+                if (error) {console.log(error)}
+                else {console.log(success)}
+            });
+        },
+
+        // editTime: (_, {activityID, time}) =>{
+        //     Activity.findOneAndUpdate({activityID: activityID}, {"$set": {time: time}},
+        //     function(error, success) {
+        //         if (error) {console.log(error)}
+        //         else {console.log(success)}
+        //     });
+        // },
 
         removeActivity: (_, {activityID, gameID}) => {
             Activity.findOneAndDelete({activityID: activityID}, 
