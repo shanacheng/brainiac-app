@@ -5,7 +5,8 @@ const Platform = mongoose.model("Platform",
         name: String,
         description: String,
         creatorName: String,
-        games: [Number]
+        games: [Number],
+        private: Boolean
     }
 );
 

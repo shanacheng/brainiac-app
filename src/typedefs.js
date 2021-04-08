@@ -7,6 +7,7 @@ const typeDefs = gql`
         getPlatforms: [Platform]
         getUser(username: String!): User
         getPlatform(platformID: Int!): Platform
+        getGame(gameID: Int!): Game
     }
 
     type Mutation{
@@ -23,6 +24,28 @@ const typeDefs = gql`
             creatorName: String!
             games: [Int]
             ): Platform!
+        createGame(
+            gameID: Int!
+            name: String!
+            description: String!
+            creatorName: String!
+            parentPlatform: Int!
+        ): Game!
+        addActivity(
+            activityID: Int!
+            type: String!
+        ): Activity!
+        bookmarkPlatform(
+            username: String!
+            platformID: Int!
+        ): Int!
+        saveChanges(
+            username: String
+            name: String
+        ): String
+        confirmPasswordChange(
+            password: String
+        ):String
     }
 
     type User{
