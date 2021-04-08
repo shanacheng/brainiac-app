@@ -68,6 +68,26 @@ const typeDefs = gql`
             card4: String
             card5: String
         ):[String]
+        addActivityColor(
+            activityID: Int!
+            color1: String
+            color2: String
+            color3: String
+        ): String
+        removeActivity(
+            activityID: Int!
+            gameID: Int!
+        ): String
+        removeActivityCard(
+            activityID: Int!
+            index: Int!
+        ): String
+        editActivityCard(
+            activityID: Int!
+            index: Int!
+            card1: String
+            card2: String
+        ): String
     }
 
     type User{

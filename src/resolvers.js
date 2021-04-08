@@ -160,7 +160,49 @@ const resolvers = {
                 else {console.log(success)}
             });
             return card
+        },
+
+        addActivityColor: (_, {activityID, color1, color2, color3}) => {
+            colors = [color1, color2, color3];
+            Activity.findOneAndUpdate({activityID: activityID}, {"$set": {colors: colors}},
+            function(error, success) {
+                if (error) {console.log(error)}
+                else {console.log(success)}
+            });
+        },
+
+        removeActivity: (_, {activityID, gameID}) => {
+            Activity.findOneAndDelete({activityID: activityID}, 
+                function(error, success) {
+                    if (error) {console.log(error)}
+                    else {console.log(success)}
+                });
+            Game.findOneAndUpdate({platformID: platformID}, {"$pull" : {gameID: gameID}},
+            function(error, success) {
+                if (error) {console.log(error)}
+                else {console.log(success)}
+            });
+        },
+
+        removeActivityCard: (_, {activityID, index}) => {
+            activityIndex = "data." + index.toString();
+            console.log(activityIndex);
+            Activity.findOneAndUpdate({activityID: activityID}, {"$unset": {activityIndex: index}},
+                function(error, success) {
+                    if (error) {console.log(error)}
+                    else {console.log(success)}
+                });
+            Activity.findOneAndUpdate({activityID: activityID}, {"$pull": {data: null}},
+            function(error, success) {
+                if (error) {console.log(error)}
+                else {console.log(success)}
+            });
+        },
+
+        editActivityCard: (_, {activityID, index, card1, card2}) => {
+
         }
+
     }
 }
 const {db} = require('./testingQL');
