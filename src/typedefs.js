@@ -24,6 +24,13 @@ const typeDefs = gql`
             creatorName: String!
             games: [Int]
             ): Platform!
+        editPlatform(
+            name: String!
+            description: String!
+            creatorName: String!
+            private: Boolean!
+            tags: [String]
+        ): String
         deletePlatform(
             platformID:Int!
             username: String!
@@ -35,6 +42,15 @@ const typeDefs = gql`
             creatorName: String!
             parentPlatform: Int!
         ): Game!
+        editGame(
+            gameID: Int!
+            parentPlatform: Int!
+            creatorName: String!
+            name: String!
+            description: String!
+            private: Boolean!
+            tags: [String]
+        ): String
         deleteGame(
             platformID: Int!
             gameID: Int!
@@ -74,6 +90,14 @@ const typeDefs = gql`
             color2: String
             color3: String
         ): String
+        editMusic(
+            activityID: Int!
+            music: String
+        ): String
+        editTimer(
+            activityID: Int!
+            time: Int!
+        ): String
         removeActivity(
             activityID: Int!
             gameID: Int!
@@ -109,6 +133,7 @@ const typeDefs = gql`
         description: String!
         creatorName: String!
         games: [Int]
+        tags: [String]
     }
 
     type Game{
