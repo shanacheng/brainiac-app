@@ -1,0 +1,23 @@
+#https://gist.github.com/sdesingh/4efe2564476079745b3de5c4e510e48e
+name: CI
+
+on:
+  push:
+    branches: [build1]
+  pull_request:
+    branches: [build1]
+
+jobs:
+  # Run basic tests.
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v1.4.4
+        with:
+          node-version: 14.15.4
+      - name: Install Packages
+        run: yarn install
+      - name: Run Tests
+        run: yarn test
