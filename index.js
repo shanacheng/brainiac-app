@@ -11,6 +11,10 @@ const {User} = require("./src/models/User");
 const app = express();
 app.use(express.json())
 
+app.get("/", function (req, res) {
+    return res.send("Hello World");
+   });
+
 
 const accountRoute = require('./src/pages/account');
 const accountSettingsRoute = require('./src/pages/accountSettings');
@@ -89,3 +93,5 @@ mongoose.connect(database, { useNewUrlParser: true, useUnifiedTopology: true })
     //deploy to heroku (env.port)
     const port = process.env.PORT || 5000;
     app.listen(port, () => console.log(`Server listening at http://localhost:5000${server.graphqlPath}`));
+
+module.exports = app;
