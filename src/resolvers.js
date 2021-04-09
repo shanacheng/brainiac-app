@@ -23,6 +23,9 @@ const resolvers = {
         },
         async getActivity(parent, args, context, info) {
             return await Activity.findOne({activityID: args.activityID});
+        },
+        async filterPlatforms(parent, args, context, info) {
+            return await Platform.find({name: args.name, creatorName: args.creatorName, tags: args.tags, private: false})
         }
     },
     Mutation: {

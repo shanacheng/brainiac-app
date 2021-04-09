@@ -51,9 +51,9 @@ var should = chai.should()
           .end((err,res) => {
               platformData = res.body.data.getPlatform
               platformData.should.have.property('name');
-              expect(platformData.name).to.equal('jacks platform');
+              expect(platformData.name).to.equal('jack new platform name');
               platformData.should.have.property('description');
-              expect(platformData.description).to.equal('this is jacks platform');
+              expect(platformData.description).to.equal('jacks new platform description');
               platformData.should.have.property('platformID');
               expect(platformData.platformID).to.equal(37);
               if (err) return done(err);

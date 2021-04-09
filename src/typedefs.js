@@ -9,6 +9,7 @@ const typeDefs = gql`
         getPlatform(platformID: Int!): Platform
         getGame(gameID: Int!): Game
         getActivity(activityID: Int!): Activity
+        filterPlatforms(name: String, creatorName: String, tags: [String]): [Platform]
     }
 
     type Mutation{
