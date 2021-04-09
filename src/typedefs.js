@@ -141,6 +141,7 @@ const typeDefs = gql`
         name: String!
         description: String!
         activities: [Activity]
+        parentPlatform: Int!
         creatorName: String!
         tags: [String]
         dateLastEdited: Int
