@@ -20,6 +20,9 @@ const resolvers = {
         },
         async getGame(parent, args, context, info) {
             return await Game.findOne({gameID: args.gameID});
+        },
+        async getActivity(parent, args, context, info) {
+            return await Activity.findOne({activityID: args.activityID});
         }
     },
     Mutation: {

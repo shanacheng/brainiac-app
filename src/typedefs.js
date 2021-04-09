@@ -8,6 +8,7 @@ const typeDefs = gql`
         getUser(username: String!): User
         getPlatform(platformID: Int!): Platform
         getGame(gameID: Int!): Game
+        getActivity(activityID: Int!): Activity
     }
 
     type Mutation{
@@ -148,6 +149,7 @@ const typeDefs = gql`
     }
 
     type Activity{
+        activityID: Int!
         type: String!
         data: [[String]]
         colors: [String]
