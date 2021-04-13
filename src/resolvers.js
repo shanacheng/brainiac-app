@@ -2,6 +2,9 @@ const { Platform } = require("./models/Platform");
 const {User} = require("./models/User");
 const {Game} = require("./models/Game");
 const { Activity } = require("./models/Activity");
+const { SECRET_KEY } = require("../config/keys");
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken'); 
 
 const resolvers = {
     Query: {
@@ -29,19 +32,35 @@ const resolvers = {
         }
     },
     Mutation: {
-        createUser: (_, {name, username, email, password}) => {
+        async createUser(_, {name, username, email, password}){
+            const newPassword = await bcrypt.hash(password, 12);
             user = new User({
                 name: name,
                 username: username,
                 email: email,
-                password: password,
+                password: newPassword,
                 profilePicture: "",
                 badges: [],
                 createdPlatforms: [],
                 bookmarkedPlatforms: [],
                 playedPlatforms: []
             });
-            return user.save();
+            const res = await user.save();
+
+            const token = jwt.sign({
+                username: res.username,
+                email: res.email,
+                name: res.name
+            }, SECRET_KEY, { 
+                expiresIn: '1h'
+            })
+
+            return {
+                ...res._doc,
+                name,
+                username,
+                token
+            }
         },
 
 

@@ -121,6 +121,7 @@ const typeDefs = gql`
         username: String!
         name: String!
         email: String!
+        token: String!
         password: String!
         profilePicture: String!
         badges: [String]
