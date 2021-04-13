@@ -1,4 +1,5 @@
 import React from 'react';
+import PlatformCard from '../components/PlatformCard'
 
 function HomePage() {
     return (
