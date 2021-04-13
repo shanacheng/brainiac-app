@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import ApolloProvider from './ApolloProvider';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 ReactDOM.render(ApolloProvider, document.getElementById('root'));
 
