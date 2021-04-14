@@ -7,29 +7,48 @@ const graphql = require('graphql');
 const {GraphQLObjectType, GraphQLSchema, GraphQLInt, GraphQLString, GraphQLList} = graphql;
 const {graphqlHTTP} = require("express-graphql");
 const {User} = require("./src/models/User");
+const path = require("path");
 
 const app = express();
 app.use(express.json())
 
-app.get("/", function (req, res) {
-    return res.send("Hello World");
-   });
+
+// app.get("/", function (req, res) {
+//     return res.send("Hello World");
+//    });
 
 
-const accountRoute = require('./src/pages/account');
-const accountSettingsRoute = require('./src/pages/accountSettings');
-const designRoute = require('./src/pages/design');
-const exploreRoute = require('./src/pages/explore');
-const gameRoute = require('./src/pages/game');
-const homeRoute = require('./src/pages/home');
+// const accountRoute = require('./src/pages/account');
+// const accountSettingsRoute = require('./src/pages/accountSettings');
+// const designRoute = require('./src/pages/design');
+// const exploreRoute = require('./src/pages/explore');
+// const gameRoute = require('./src/pages/game');
+// const homeRoute = require('./src/pages/home');
 
 
-app.use('/account', accountRoute); 
-app.use('/accountSettings', accountSettingsRoute); 
-app.use('/design', designRoute);
-app.use('/explore', exploreRoute);
-app.use('/game', gameRoute);
-app.use('/', homeRoute);
+// app.use('/account', accountRoute); 
+// app.use('/accountSettings', accountSettingsRoute); 
+// app.use('/design', designRoute);
+// app.use('/explore', exploreRoute);
+// app.use('/game', gameRoute);
+// app.use('/', homeRoute);
+
+const handleServeStaticFiles = (router) => {
+    let staticFiles = path.join(__dirname, "public");
+    if (process.env.DEVELOPMENT) {
+      // Serve static files
+      staticFiles = path.join(__dirname, "public");
+    }
+  
+    // Serve static files.
+    router.use(express.static(staticFiles));
+  
+    // router.use("*", (req, res) => {
+    //   res.sendFile(path.join(staticFiles, "index.html"));
+    // });
+};
+
+handleServeStaticFiles(app);
 
 const userType = require('./src/graphql/UserType');
 const rootQuery = new GraphQLObjectType({
