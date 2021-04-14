@@ -33,22 +33,22 @@ app.use(express.json())
 // app.use('/game', gameRoute);
 // app.use('/', homeRoute);
 
-const handleServeStaticFiles = (router) => {
-    let staticFiles = path.join(__dirname, "public");
-    if (process.env.DEVELOPMENT) {
-      // Serve static files
-      staticFiles = path.join(__dirname, "public");
-    }
+// const handleServeStaticFiles = (router) => {
+//     let staticFiles = path.join(__dirname, "public");
+//     if (process.env.DEVELOPMENT) {
+//       // Serve static files
+//       staticFiles = path.join(__dirname, "public");
+//     }
   
-    // Serve static files.
-    router.use(express.static(staticFiles));
+//     // Serve static files.
+//     router.use(express.static(staticFiles));
   
-    // router.use("*", (req, res) => {
-    //   res.sendFile(path.join(staticFiles, "index.html"));
-    // });
-};
+//     // router.use("*", (req, res) => {
+//     //   res.sendFile(path.join(staticFiles, "index.html"));
+//     // });
+// };
 
-handleServeStaticFiles(app);
+// handleServeStaticFiles(app);
 
 const userType = require('./src/graphql/UserType');
 const rootQuery = new GraphQLObjectType({
