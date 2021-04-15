@@ -68,7 +68,9 @@ const resolvers = {
         },
 
         async login(_, {email, password}) {
+            console.log(email);
             const user  = await User.findOne({email});
+            console.log(user);
             const token = generateToken(user);
             const match = await bcrypt.compare(password, user.password);
             return {
