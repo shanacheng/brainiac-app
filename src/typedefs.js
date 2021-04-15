@@ -19,6 +19,10 @@ const typeDefs = gql`
             email: String!
             password: String!
             ): User!
+        login(
+            email: String!
+            password: String!
+        ): User!
         createPlatform(
             platformID: Int!
             name: String!

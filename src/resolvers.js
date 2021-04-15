@@ -6,6 +6,16 @@ const { SECRET_KEY } = require("../config/keys");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken'); 
 
+function generateToken(user) {
+    return jwt.sign({
+        username: user.username,
+        email: user.email,
+        name: user.name
+    }, SECRET_KEY, { 
+        expiresIn: '1h'
+    })
+}
+
 const resolvers = {
     Query: {
         hello: () => "hello",
@@ -47,18 +57,23 @@ const resolvers = {
             });
             const res = await user.save();
 
-            const token = jwt.sign({
-                username: res.username,
-                email: res.email,
-                name: res.name
-            }, SECRET_KEY, { 
-                expiresIn: '1h'
-            })
+            const token = generateToken(res);
 
             return {
                 ...res._doc,
                 name,
                 username,
+                token
+            }
+        },
+
+        async login(_, {email, password}) {
+            const user  = await User.findOne({email});
+            const token = generateToken(user);
+            const match = await bcrypt.compare(password, user.password);
+            return {
+                ...user._doc,
+                // username,
                 token
             }
         },

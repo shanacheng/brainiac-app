@@ -2,22 +2,23 @@ import React, {useState} from 'react';
 import {Form, Button} from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag'
+import { useForm } from '../util/hooks';
+function SignUpPage() { 
+    const [ errors, setErrors ] = useState({});
 
-function SignUpPage() {
-    const [values, setValues] = useState({
+    const { handleChange, onSubmit, values} = useForm(signupUser, {
         username:'',
         email:'',
         name:'',
         password:''
     })
 
-    const handleChange = (event) => {
-        setValues({...values, [event.target.name]: event.target.value});
-    }
-
     const [addUser, {loading}] = useMutation(REGISTER_USER, {
         update(proxy, result) {
             console.log(result)
+        },
+        onError(err) {
+            setErrors(err.graphQLErrors[0].extensions.exception.errors)
         },
         variables: {
             username: values.username,
@@ -27,12 +28,10 @@ function SignUpPage() {
         }
     })
 
-    const onSubmit = (event) => {
-        event.preventDefault();
-        addUser()
+    function signupUser() {
+        addUser();
     }
 
-    
     return (
         <div className="form-container">
             <h1>Sign Up Page</h1>
@@ -83,7 +82,7 @@ function SignUpPage() {
                     <Form.Check type="checkbox" label="Check me out" />
                 </Form.Group> */}
                 <Button variant="primary" type="submit">
-                    Submit
+                    Sign Up
                 </Button>
             </Form>
         </div>
