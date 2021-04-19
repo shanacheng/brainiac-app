@@ -31,10 +31,11 @@ const typeDefs = gql`
             games: [Int]
             ): Platform!
         editPlatform(
-            name: String!
-            description: String!
-            creatorName: String!
-            private: Boolean!
+            platformID: Int!
+            name: String
+            description: String
+            creatorName: String
+            private: Boolean
             tags: [String]
         ): String
         deletePlatform(
