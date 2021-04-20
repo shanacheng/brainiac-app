@@ -81,7 +81,14 @@ const resolvers = {
         },
 
 
-        createPlatform: (_, {platformID, name, description, creatorName}) => {
+        createPlatform: (_, {name, description, creatorName}) => {
+            var platformID;
+            while (true) {
+                platformID = Math.floor(Math.random() * 100000000);
+                console.log(platformID);
+                if (Platform.findOne({platformID: platformID}).data == null)
+                break
+            }
             platform = new Platform({
                 platformID: platformID,
                 name: name, 

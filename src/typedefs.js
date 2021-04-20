@@ -24,7 +24,6 @@ const typeDefs = gql`
             password: String!
         ): User!
         createPlatform(
-            platformID: Int!
             name: String!
             description: String!
             creatorName: String!
