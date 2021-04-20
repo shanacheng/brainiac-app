@@ -82,6 +82,7 @@ const resolvers = {
 
 
         createPlatform: (_, {name, description, creatorName}) => {
+            console.log("hit platform create method")
             var platformID;
             while (true) {
                 platformID = Math.floor(Math.random() * 100000000);
