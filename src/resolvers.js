@@ -165,7 +165,14 @@ const resolvers = {
             return "";
         },
 
-        createGame: (_, {gameID, name, description, creatorName, parentPlatform}) => {
+        createGame: (_, {name, description, creatorName, parentPlatform}) => {
+            var gameID;
+            while (true) {
+                gameID = Math.floor(Math.random() * 100000000);
+                console.log(gameID);
+                if (Game.findOne({gameID: gameID}).data == null)
+                break
+            }
             game = new Game({
                 gameID: gameID,
                 name: name,
@@ -184,8 +191,8 @@ const resolvers = {
             return game.save();
         },
 
-        editGame: (_, {gameID, parentPlatform, name, description, creatorName, private, tags}) => {
-           Game.findOneAndUpdate({gameID: gameID, parentPlatform: parentPlatform, creatorName: creatorName}, {"$set" : {name: name, description: description, private: private, tags: tags}}, 
+        editGame: (_, {gameID, parentPlatform, name, description, creatorName, tags}) => {
+           Game.findOneAndUpdate({gameID: gameID, parentPlatform: parentPlatform, creatorName: creatorName}, {"$set" : {name: name, description: description, tags: tags}}, 
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}

@@ -41,7 +41,6 @@ const typeDefs = gql`
             username: String!
         ): String
         createGame(
-            gameID: Int!
             name: String!
             description: String!
             creatorName: String!
@@ -53,7 +52,7 @@ const typeDefs = gql`
             creatorName: String!
             name: String!
             description: String!
-            private: Boolean!
+            # private: Boolean
             tags: [String]
         ): String
         deleteGame(
