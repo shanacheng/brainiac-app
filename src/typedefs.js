@@ -41,8 +41,6 @@ const typeDefs = gql`
             username: String!
         ): String
         createGame(
-            name: String!
-            description: String!
             creatorName: String!
             parentPlatform: Int!
         ): Game!

@@ -165,7 +165,7 @@ const resolvers = {
             return "";
         },
 
-        createGame: (_, {name, description, creatorName, parentPlatform}) => {
+        createGame: (_, {creatorName, parentPlatform}) => {
             var gameID;
             while (true) {
                 gameID = Math.floor(Math.random() * 100000000);
@@ -175,8 +175,8 @@ const resolvers = {
             }
             game = new Game({
                 gameID: gameID,
-                name: name,
-                description: description, 
+                name: "",
+                description: "", 
                 activities: [],
                 creatorName: creatorName,
                 parentPlatform: parentPlatform,
