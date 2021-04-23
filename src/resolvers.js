@@ -129,12 +129,15 @@ const resolvers = {
             });
         },
 
-        bookmarkPlatform: (_, {username,platformID}) => {
-            User.findOneAndUpdate({username: username}, {"$push": {bookmarkedPlatforms: platformID}},
-            function(error, success) {
-                if (error) {console.log(error)}
-                else {console.log(success)}
-            });
+        async bookmarkPlatform(_, {username,platformID}){
+            const user = await User.findOne({username: username});
+            if (user.bookmarkedPlatforms.includes(platformID) == false){
+                User.findOneAndUpdate({username: username}, {"$push": {bookmarkedPlatforms: platformID}},
+                function(error, success) {
+                    if (error) {console.log(error)}
+                    else {console.log(success)}
+                });
+            }
             return platformID;
         },
 
