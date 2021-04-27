@@ -216,7 +216,13 @@ const resolvers = {
             });
         },
 
-        addActivity: (_, {activityID, type, gameID}) => {
+        addActivity: (_, {type, gameID}) => {
+            while (true) {
+                activityID = Math.floor(Math.random() * 100000000);
+                console.log(gameID);
+                if (Activity.findOne({activityID: activityID}).data == null)
+                break
+            }
             activity = new Activity({
                 activityID: activityID, 
                 type: type, 
@@ -233,8 +239,8 @@ const resolvers = {
             return activity.save();
         },
 
-        addActivityCard: (_, {activityID, card1, card2, card3, card4, card5}) => {
-            card = [card1, card2, card3, card4, card5];
+        addActivityCard: (_, {activityID, card1, card2, card3, card4, card5, card6}) => {
+            card = [card1, card2, card3, card4, card5, card6];
             Activity.findOneAndUpdate({activityID: activityID}, {"$push": {data: card}},
             function(error, success) {
                 if (error) {console.log(error)}

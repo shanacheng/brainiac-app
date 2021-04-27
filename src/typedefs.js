@@ -58,7 +58,6 @@ const typeDefs = gql`
             gameID: Int!
         ): String
         addActivity(
-            activityID: Int!
             type: String!
             gameID: Int!
         ): Activity!
@@ -85,6 +84,7 @@ const typeDefs = gql`
             card3: String
             card4: String
             card5: String
+            card6: String
         ):[String]
         addActivityColor(
             activityID: Int!
