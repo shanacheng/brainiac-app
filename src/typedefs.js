@@ -143,7 +143,7 @@ const typeDefs = gql`
         gameID: Int!
         name: String!
         description: String!
-        activities: [Activity]
+        activities: [Int]
         parentPlatform: Int!
         creatorName: String!
         tags: [String]
