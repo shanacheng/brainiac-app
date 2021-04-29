@@ -5,6 +5,7 @@ const { Activity } = require("./models/Activity");
 const { SECRET_KEY } = require("../config/keys");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken'); 
+const {AuthenticationError} = require('apollo-server');
 
 function generateToken(user) {
     return jwt.sign({
@@ -68,11 +69,18 @@ const resolvers = {
         },
 
         async login(_, {email, password}) {
+            console.log(password)
             console.log(email);
             const user  = await User.findOne({email});
             console.log(user);
-            const token = generateToken(user);
+            console.log('before compare')
             const match = await bcrypt.compare(password, user.password);
+            console.log('after')
+            if(!match){
+                console.log('not matching');
+                throw new AuthenticationError('Incorrect Password or Email')
+            }
+            const token = generateToken(user);
             return {
                 ...user._doc,
                 // username,

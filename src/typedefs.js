@@ -31,6 +31,7 @@ const typeDefs = gql`
             games: [Int]
             ): Platform!
         editPlatform(
+            platformID: Int!
             name: String!
             description: String!
             creatorName: String!
