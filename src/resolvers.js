@@ -74,6 +74,8 @@ const resolvers = {
             const user  = await User.findOne({email});
             console.log(user);
             console.log('before compare')
+            console.log(password);
+            console.log(user.password);
             const match = await bcrypt.compare(password, user.password);
             console.log('after')
             if(!match){
@@ -89,7 +91,15 @@ const resolvers = {
         },
 
 
-        createPlatform: (_, {platformID, name, description, creatorName}) => {
+        createPlatform: (_, {name, description, creatorName}) => {
+            console.log("hit platform create method")
+            var platformID;
+            while (true) {
+                platformID = Math.floor(Math.random() * 100000000);
+                console.log(platformID);
+                if (Platform.findOne({platformID: platformID}).data == null)
+                break
+            }
             platform = new Platform({
                 platformID: platformID,
                 name: name, 
@@ -129,12 +139,15 @@ const resolvers = {
             });
         },
 
-        bookmarkPlatform: (_, {username,platformID}) => {
-            User.findOneAndUpdate({username: username}, {"$push": {bookmarkedPlatforms: platformID}},
-            function(error, success) {
-                if (error) {console.log(error)}
-                else {console.log(success)}
-            });
+        async bookmarkPlatform(_, {username,platformID}){
+            const user = await User.findOne({username: username});
+            if (user.bookmarkedPlatforms.includes(platformID) == false){
+                User.findOneAndUpdate({username: username}, {"$push": {bookmarkedPlatforms: platformID}},
+                function(error, success) {
+                    if (error) {console.log(error)}
+                    else {console.log(success)}
+                });
+            }
             return platformID;
         },
 
@@ -165,11 +178,18 @@ const resolvers = {
             return "";
         },
 
-        createGame: (_, {gameID, name, description, creatorName, parentPlatform}) => {
+        createGame: (_, {creatorName, parentPlatform}) => {
+            var gameID;
+            while (true) {
+                gameID = Math.floor(Math.random() * 100000000);
+                console.log(gameID);
+                if (Game.findOne({gameID: gameID}).data == null)
+                break
+            }
             game = new Game({
                 gameID: gameID,
-                name: name,
-                description: description, 
+                name: "",
+                description: "", 
                 activities: [],
                 creatorName: creatorName,
                 parentPlatform: parentPlatform,
@@ -184,8 +204,8 @@ const resolvers = {
             return game.save();
         },
 
-        editGame: (_, {gameID, parentPlatform, name, description, creatorName, private, tags}) => {
-           Game.findOneAndUpdate({gameID: gameID, parentPlatform: parentPlatform, creatorName: creatorName}, {"$set" : {name: name, description: description, private: private, tags: tags}}, 
+        editGame: (_, {gameID, parentPlatform, name, description, creatorName, tags}) => {
+           Game.findOneAndUpdate({gameID: gameID, parentPlatform: parentPlatform, creatorName: creatorName}, {"$set" : {name: name, description: description, tags: tags}}, 
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}
@@ -206,7 +226,13 @@ const resolvers = {
             });
         },
 
-        addActivity: (_, {activityID, type, gameID}) => {
+        addActivity: (_, {type, gameID}) => {
+            while (true) {
+                activityID = Math.floor(Math.random() * 100000000);
+                console.log(gameID);
+                if (Activity.findOne({activityID: activityID}).data == null)
+                break
+            }
             activity = new Activity({
                 activityID: activityID, 
                 type: type, 
@@ -223,8 +249,8 @@ const resolvers = {
             return activity.save();
         },
 
-        addActivityCard: (_, {activityID, card1, card2, card3, card4, card5}) => {
-            card = [card1, card2, card3, card4, card5];
+        addActivityCard: (_, {activityID, card1, card2, card3, card4, card5, card6}) => {
+            card = [card1, card2, card3, card4, card5, card6];
             Activity.findOneAndUpdate({activityID: activityID}, {"$push": {data: card}},
             function(error, success) {
                 if (error) {console.log(error)}

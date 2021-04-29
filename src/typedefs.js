@@ -24,11 +24,9 @@ const typeDefs = gql`
             password: String!
         ): User!
         createPlatform(
-            platformID: Int!
             name: String!
             description: String!
             creatorName: String!
-            games: [Int]
             ): Platform!
         editPlatform(
             platformID: Int!
@@ -43,9 +41,6 @@ const typeDefs = gql`
             username: String!
         ): String
         createGame(
-            gameID: Int!
-            name: String!
-            description: String!
             creatorName: String!
             parentPlatform: Int!
         ): Game!
@@ -55,7 +50,7 @@ const typeDefs = gql`
             creatorName: String!
             name: String!
             description: String!
-            private: Boolean!
+            # private: Boolean
             tags: [String]
         ): String
         deleteGame(
@@ -63,7 +58,6 @@ const typeDefs = gql`
             gameID: Int!
         ): String
         addActivity(
-            activityID: Int!
             type: String!
             gameID: Int!
         ): Activity!
@@ -90,6 +84,7 @@ const typeDefs = gql`
             card3: String
             card4: String
             card5: String
+            card6: String
         ):[String]
         addActivityColor(
             activityID: Int!
@@ -148,7 +143,7 @@ const typeDefs = gql`
         gameID: Int!
         name: String!
         description: String!
-        activities: [Activity]
+        activities: [Int]
         parentPlatform: Int!
         creatorName: String!
         tags: [String]
