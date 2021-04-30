@@ -154,11 +154,14 @@ const resolvers = {
         },
 
         addPlayedPlatform: (_, {username,platformID}) => {
-            User.findOneAndUpdate({username: username}, {"$push": {playedPlatforms: platformID}},
-            function(error, success) {
-                if (error) {console.log(error)}
-                else {console.log(success)}
-            });
+            const user = await User.findOne({username: username});
+            if (user.playedPlatforms.includes(platformID) == false) {
+                User.findOneAndUpdate({username: username}, {"$push": {playedPlatforms: platformID}},
+                function(error, success) {
+                    if (error) {console.log(error)}
+                    else {console.log(success)}
+                });
+            }
             return platformID;
         },
 
