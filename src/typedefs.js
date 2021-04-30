@@ -65,6 +65,10 @@ const typeDefs = gql`
             username: String!
             platformID: Int!
         ): Int!
+        unbookmarkPlatform(
+            username: String!
+            platformID: Int!
+        ): Int!
         addPlayedPlatform(
             username: String!
             platformID: Int!
