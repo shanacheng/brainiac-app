@@ -141,6 +141,18 @@ const resolvers = {
             return platformID;
         },
 
+        async unbookmarkPlatform(_, {username,platformID}){
+            const user = await User.findOne({username: username});
+            if (user.bookmarkedPlatforms.includes(platformID) == true){
+                User.findOneAndUpdate({username: username}, {"$pull": {bookmarkedPlatforms: platformID}},
+                function(error, success) {
+                    if (error) {console.log(error)}
+                    else {console.log(success)}
+                });
+            }
+            return platformID;
+        },
+
         addPlayedPlatform: (_, {username,platformID}) => {
             User.findOneAndUpdate({username: username}, {"$push": {playedPlatforms: platformID}},
             function(error, success) {
