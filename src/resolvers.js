@@ -163,7 +163,7 @@ const resolvers = {
             return platformID;
         },
 
-        addPlayedPlatform: (_, {username,platformID}) => {
+        async addPlayedPlatform(_, {username,platformID}){
             const user = await User.findOne({username: username});
             if (user.playedPlatforms.includes(platformID) == false) {
                 User.findOneAndUpdate({username: username}, {"$push": {playedPlatforms: platformID}},
