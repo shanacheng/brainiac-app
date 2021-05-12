@@ -240,6 +240,7 @@ const resolvers = {
             }
             activity = new Activity({
                 activityID: activityID, 
+                parentGame: gameID,
                 type: type, 
                 data: [],
                 colors: ["white", "white", "white"],
