@@ -231,7 +231,7 @@ const resolvers = {
             });
         },
 
-        addActivity: (_, {type, gameID}) => {
+        addActivity: (_, {type, gameID, platformID}) => {
             while (true) {
                 activityID = Math.floor(Math.random() * 100000000);
                 console.log(gameID);
@@ -240,6 +240,7 @@ const resolvers = {
             }
             activity = new Activity({
                 activityID: activityID, 
+                parentPlatform: platformID,
                 parentGame: gameID,
                 type: type, 
                 data: [],
