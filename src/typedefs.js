@@ -156,6 +156,8 @@ const typeDefs = gql`
 
     type Activity{
         activityID: Int!
+        parentPlatform: Int!
+        parentGame: Int!
         type: String!
         data: [[String]]
         colors: [String]
