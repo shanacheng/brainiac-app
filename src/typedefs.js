@@ -60,6 +60,7 @@ const typeDefs = gql`
         addActivity(
             type: String!
             gameID: Int!
+            platformID: Int!
         ): Activity!
         bookmarkPlatform(
             username: String!
