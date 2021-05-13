@@ -307,7 +307,7 @@ const resolvers = {
                     if (error) {console.log(error)}
                     else {console.log(success)}
                 });
-            Game.findOneAndUpdate({platformID: platformID}, {"$pull" : {gameID: gameID}},
+            Game.findOneAndUpdate({gameID: gameID}, {"$pull" : {activities: activityID}},
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}
