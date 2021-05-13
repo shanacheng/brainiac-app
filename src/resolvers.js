@@ -234,7 +234,7 @@ const resolvers = {
                 if (error) {console.log(error)}
                 else {console.log(success)}
             });
-            Platform.findOneAndUpdate({platformID: platformID}, {"$pull" : {gameID: gameID}},
+            Platform.findOneAndUpdate({platformID: platformID}, {"$pull" : {games: gameID}},
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}
@@ -250,6 +250,7 @@ const resolvers = {
             }
             activity = new Activity({
                 activityID: activityID, 
+                parentGame: gameID,
                 type: type, 
                 data: [],
                 colors: ["white", "white", "white"],
@@ -284,7 +285,7 @@ const resolvers = {
         },
 
         editMusic: (_, {activityID, music}) => {
-            Activity.findOneAndUpdate({activityID: activityID}, {"$set": {music: music}},
+            Activity.findOneAndUpdate({activityID: activityID}, {"$xset": {music: music}},
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}
