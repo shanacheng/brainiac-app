@@ -149,12 +149,27 @@ const resolvers = {
             return platformID;
         },
 
-        addPlayedPlatform: (_, {username,platformID}) => {
-            User.findOneAndUpdate({username: username}, {"$push": {playedPlatforms: platformID}},
-            function(error, success) {
-                if (error) {console.log(error)}
-                else {console.log(success)}
-            });
+        async unbookmarkPlatform(_, {username,platformID}){
+            const user = await User.findOne({username: username});
+            if (user.bookmarkedPlatforms.includes(platformID) == true){
+                User.findOneAndUpdate({username: username}, {"$pull": {bookmarkedPlatforms: platformID}},
+                function(error, success) {
+                    if (error) {console.log(error)}
+                    else {console.log(success)}
+                });
+            }
+            return platformID;
+        },
+
+        async addPlayedPlatform(_, {username,platformID}){
+            const user = await User.findOne({username: username});
+            if (user.playedPlatforms.includes(platformID) == false) {
+                User.findOneAndUpdate({username: username}, {"$push": {playedPlatforms: platformID}},
+                function(error, success) {
+                    if (error) {console.log(error)}
+                    else {console.log(success)}
+                });
+            }
             return platformID;
         },
 
@@ -218,14 +233,14 @@ const resolvers = {
                 if (error) {console.log(error)}
                 else {console.log(success)}
             });
-            Platform.findOneAndUpdate({platformID: platformID}, {"$pull" : {gameID: gameID}},
+            Platform.findOneAndUpdate({platformID: platformID}, {"$pull" : {games: gameID}},
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}
             });
         },
 
-        addActivity: (_, {type, gameID}) => {
+        addActivity: (_, {type, gameID, platformID}) => {
             while (true) {
                 activityID = Math.floor(Math.random() * 100000000);
                 console.log(gameID);
@@ -234,6 +249,8 @@ const resolvers = {
             }
             activity = new Activity({
                 activityID: activityID, 
+                parentPlatform: platformID,
+                parentGame: gameID,
                 type: type, 
                 data: [],
                 colors: ["white", "white", "white"],
@@ -268,7 +285,7 @@ const resolvers = {
         },
 
         editMusic: (_, {activityID, music}) => {
-            Activity.findOneAndUpdate({activityID: activityID}, {"$set": {music: music}},
+            Activity.findOneAndUpdate({activityID: activityID}, {"$xset": {music: music}},
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}
@@ -289,7 +306,7 @@ const resolvers = {
                     if (error) {console.log(error)}
                     else {console.log(success)}
                 });
-            Game.findOneAndUpdate({platformID: platformID}, {"$pull" : {gameID: gameID}},
+            Game.findOneAndUpdate({gameID: gameID}, {"$pull" : {activities: activityID}},
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}

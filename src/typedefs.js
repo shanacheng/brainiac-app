@@ -60,8 +60,13 @@ const typeDefs = gql`
         addActivity(
             type: String!
             gameID: Int!
+            platformID: Int!
         ): Activity!
         bookmarkPlatform(
+            username: String!
+            platformID: Int!
+        ): Int!
+        unbookmarkPlatform(
             username: String!
             platformID: Int!
         ): Int!
@@ -154,6 +159,8 @@ const typeDefs = gql`
 
     type Activity{
         activityID: Int!
+        parentPlatform: Int!
+        parentGame: Int!
         type: String!
         data: [[String]]
         colors: [String]
