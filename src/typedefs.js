@@ -73,8 +73,10 @@ const typeDefs = gql`
             email: String!
             username: String
             name: String
+            profilePicture: String
         ): String
         confirmPasswordChange(
+            email: String!
             password: String
         ):String
         addActivityCard(

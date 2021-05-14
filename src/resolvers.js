@@ -6,7 +6,6 @@ const { SECRET_KEY } = require("../config/keys");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken'); 
 const {AuthenticationError} = require('apollo-server');
-
 function generateToken(user) {
     return jwt.sign({
         username: user.username,
@@ -16,6 +15,7 @@ function generateToken(user) {
         expiresIn: '1h'
     })
 }
+
 
 const resolvers = {
     Query: {
@@ -89,8 +89,6 @@ const resolvers = {
                 token
             }
         },
-
-
         createPlatform: (_, {name, description, creatorName}) => {
             console.log("hit platform create method")
             var platformID;
@@ -160,8 +158,8 @@ const resolvers = {
             return platformID;
         },
 
-        saveChanges: (_, {email, name, username}) => {
-            User.findOneAndUpdate({email: email}, {"$set" : {name: name, username: username}}, 
+        saveChanges: (_, {email, name, username, profilePicture}) => {
+            User.findOneAndUpdate({email: email}, {"$set" : {name: name, username: username, profilePicture: profilePicture}}, 
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}
@@ -169,8 +167,9 @@ const resolvers = {
             return "";
         },
 
-        confirmPasswordChange: (_, {password}) => {
-            User.findOneAndUpdate({email: email}, {"$set" : {password: password}},
+        async confirmPasswordChange(_, {email, password}){
+            const newPassword = await bcrypt(password, 12);
+            User.findOneAndUpdate({email: email}, {"$set" : {password: newPassword}},
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}
