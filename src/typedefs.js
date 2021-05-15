@@ -35,6 +35,7 @@ const typeDefs = gql`
             creatorName: String!
             private: Boolean!
             tags: [String]
+            photo: String!
         ): String
         deletePlatform(
             platformID:Int!
@@ -143,7 +144,8 @@ const typeDefs = gql`
         description: String!
         creatorName: String!
         games: [Int]
-        tags: [String]
+        tags: [String],
+        photo: String!
     }
 
     type Game{

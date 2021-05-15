@@ -105,7 +105,8 @@ const resolvers = {
                 creatorName: creatorName,
                 games: [],
                 private: true,
-                tags: []
+                tags: [],
+                photo: ""
             });
             User.findOneAndUpdate({username: creatorName},{"$push": {createdPlatforms: platformID}}, 
             function(error, success) {
@@ -115,8 +116,8 @@ const resolvers = {
             return platform.save();
         },
 
-        editPlatform: (_, {platformID, name, description, creatorName, private, tags}) => {
-            Platform.findOneAndUpdate({platformID: platformID, creatorName: creatorName}, {"$set" : {name: name, description: description, private: private, tags: tags}}, 
+        editPlatform: (_, {platformID, name, description, creatorName, private, tags, photo}) => {
+            Platform.findOneAndUpdate({platformID: platformID, creatorName: creatorName}, {"$set" : {name: name, description: description, private: private, tags: tags, photo: photo}}, 
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}
