@@ -314,15 +314,15 @@ const resolvers = {
             });
         },
 
-        removeActivityCard: (_, {activityID, index}) => {
+        async removeActivityCard(_, {activityID, index}){
             activityIndex = "data." + index.toString();
             console.log(activityIndex);
-            Activity.findOneAndUpdate({activityID: activityID}, {"$unset": {activityIndex: index}},
-                function(error, success) {
-                    if (error) {console.log(error)}
-                    else {console.log(success)}
-                });
-            Activity.findOneAndUpdate({activityID: activityID}, {"$pull": {data: null}},
+            const activity = await Activity.findOne({activityID: activityID});
+            var data = activity.data;
+            data.splice(index, 1);
+            const updated = data;
+            console.log("--------updated-------")
+            Activity.findOneAndUpdate({activityID: activityID}, {"$set": {data: updated}},
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}
