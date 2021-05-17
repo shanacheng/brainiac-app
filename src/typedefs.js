@@ -27,6 +27,7 @@ const typeDefs = gql`
             name: String!
             description: String!
             creatorName: String!
+            tags: [String]
             ): Platform!
         editPlatform(
             platformID: Int!
