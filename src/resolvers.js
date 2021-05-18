@@ -184,9 +184,20 @@ const resolvers = {
             return "";
         },
 
+
+        editColor: (_, {email, color}) => {
+            User.findOneAndUpdate({email: email}, {"$set" : {color: color}}, 
+            function(error, success) {
+                if (error) {console.log(error)}
+                else {console.log(success)}
+            });
+            return "";
+        },
+
         async confirmPasswordChange(_, {email, password}){
             const newPassword = await bcrypt(password, 12);
             User.findOneAndUpdate({email: email}, {"$set" : {password: newPassword}},
+
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}
