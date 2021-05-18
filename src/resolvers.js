@@ -5,7 +5,7 @@ const { Activity } = require("./models/Activity");
 const { SECRET_KEY } = require("../config/keys");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken'); 
-
+const {AuthenticationError} = require('apollo-server');
 function generateToken(user) {
     return jwt.sign({
         username: user.username,
@@ -15,6 +15,7 @@ function generateToken(user) {
         expiresIn: '1h'
     })
 }
+
 
 const resolvers = {
     Query: {
@@ -49,7 +50,7 @@ const resolvers = {
                 username: username,
                 email: email,
                 password: newPassword,
-                profilePicture: "",
+                profilePicture: "https://res.cloudinary.com/dkgfsmwvg/image/upload/v1621309258/brainiac_data/pfpdef_qaxfzp.jpg",
                 badges: [],
                 createdPlatforms: [],
                 bookmarkedPlatforms: [],
@@ -69,20 +70,27 @@ const resolvers = {
         },
 
         async login(_, {email, password}) {
+            console.log(password)
             console.log(email);
             const user  = await User.findOne({email});
             console.log(user);
-            const token = generateToken(user);
+            console.log('before compare')
+            console.log(password);
+            console.log(user.password);
             const match = await bcrypt.compare(password, user.password);
+            console.log('after')
+            if(!match){
+                console.log('not matching');
+                throw new AuthenticationError('Incorrect Password or Email')
+            }
+            const token = generateToken(user);
             return {
                 ...user._doc,
                 // username,
                 token
             }
         },
-
-
-        createPlatform: (_, {name, description, creatorName}) => {
+        createPlatform: (_, {name, description, creatorName, tags, photo}) => {
             console.log("hit platform create method")
             var platformID;
             while (true) {
@@ -98,7 +106,8 @@ const resolvers = {
                 creatorName: creatorName,
                 games: [],
                 private: true,
-                tags: []
+                tags: tags,
+                photo: photo
             });
             User.findOneAndUpdate({username: creatorName},{"$push": {createdPlatforms: platformID}}, 
             function(error, success) {
@@ -108,8 +117,8 @@ const resolvers = {
             return platform.save();
         },
 
-        editPlatform: (_, {platformID, name, description, creatorName, private, tags}) => {
-            Platform.findOneAndUpdate({platformID: platformID, creatorName: creatorName}, {"$set" : {name: name, description: description, private: private, tags: tags}}, 
+        editPlatform: (_, {platformID, name, description, creatorName, private, tags, photo}) => {
+            Platform.findOneAndUpdate({platformID: platformID, creatorName: creatorName}, {"$set" : {name: name, description: description, private: private, tags: tags, photo: photo}}, 
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}
@@ -166,14 +175,15 @@ const resolvers = {
             return platformID;
         },
 
-        saveChanges: (_, {email, name, username}) => {
-            User.findOneAndUpdate({email: email}, {"$set" : {name: name, username: username}}, 
+        saveChanges: (_, {email, name, username, profilePicture}) => {
+            User.findOneAndUpdate({email: email}, {"$set" : {name: name, username: username, profilePicture: profilePicture}}, 
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}
             });
             return "";
         },
+
 
         editColor: (_, {email, color}) => {
             User.findOneAndUpdate({email: email}, {"$set" : {color: color}}, 
@@ -184,8 +194,10 @@ const resolvers = {
             return "";
         },
 
-        confirmPasswordChange: (_, {password}) => {
-            User.findOneAndUpdate({email: email}, {"$set" : {password: password}},
+        async confirmPasswordChange(_, {email, password}){
+            const newPassword = await bcrypt(password, 12);
+            User.findOneAndUpdate({email: email}, {"$set" : {password: newPassword}},
+
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}

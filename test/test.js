@@ -267,19 +267,19 @@ var should = chai.should()
          })
       });
 
-    //   describe('GraphQLEditPlatform', () => {
-    //     it('Shows working functionality of editPlatform', (done) => {
-    //         request(app).post('/graphql')
-    //         .send({ query: ` mutation{
-    //             editPlatform(platformID:37, creatorName: "jacknewuser", name: "jack new platform name", description: "jacks new platform description", private: false)
-    //           }`})
-    //         .expect(200)
-    //         .end((err,res) => {
-    //             if (err) return done(err);
-    //             done();
-    //           })
-    //      })
-    //   });
+       describe('GraphQLEditPlatform', () => {
+         it('Shows working functionality of editPlatform', (done) => {
+             request(app).post('/graphql')
+             .send({ query: ` mutation{
+                 editPlatform(platformID:37, creatorName: "jacknewuser", name: "jack new platform name", description: "jacks new platform description", private: false)
+               }`})
+             .expect(200)
+             .end((err,res) => {
+                 if (err) return done(err);
+                 done();
+               })
+          })
+       });
 
       describe('GraphQLDeletePlatform', () => {
         it('Shows working functionality of deletePlatform', (done) => {

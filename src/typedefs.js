@@ -27,14 +27,17 @@ const typeDefs = gql`
             name: String!
             description: String!
             creatorName: String!
+            tags: [String]
+            photo: String!
             ): Platform!
         editPlatform(
             platformID: Int!
-            name: String
-            description: String
-            creatorName: String
-            private: Boolean
+            name: String!
+            description: String!
+            creatorName: String!
+            private: Boolean!
             tags: [String]
+            photo: String!
         ): String
         deletePlatform(
             platformID:Int!
@@ -78,12 +81,14 @@ const typeDefs = gql`
             email: String!
             username: String
             name: String
+            profilePicture: String
         ): String
         editColor(
             email: String!
             color: String
         ): String
         confirmPasswordChange(
+            email: String!
             password: String
         ):String
         addActivityCard(
@@ -146,7 +151,8 @@ const typeDefs = gql`
         description: String!
         creatorName: String!
         games: [Int]
-        tags: [String]
+        tags: [String],
+        photo: String!
     }
 
     type Game{
