@@ -175,6 +175,15 @@ const resolvers = {
             return "";
         },
 
+        editColor: (_, {email, color}) => {
+            User.findOneAndUpdate({email: email}, {"$set" : {color: color}}, 
+            function(error, success) {
+                if (error) {console.log(error)}
+                else {console.log(success)}
+            });
+            return "";
+        },
+
         confirmPasswordChange: (_, {password}) => {
             User.findOneAndUpdate({email: email}, {"$set" : {password: password}},
             function(error, success) {

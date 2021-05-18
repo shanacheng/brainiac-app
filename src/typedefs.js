@@ -79,6 +79,10 @@ const typeDefs = gql`
             username: String
             name: String
         ): String
+        editColor(
+            email: String!
+            color: String
+        ): String
         confirmPasswordChange(
             password: String
         ):String
