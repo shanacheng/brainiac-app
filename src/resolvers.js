@@ -50,7 +50,7 @@ const resolvers = {
                 username: username,
                 email: email,
                 password: newPassword,
-                profilePicture: "",
+                profilePicture: "https://res.cloudinary.com/dkgfsmwvg/image/upload/v1621309258/brainiac_data/pfpdef_qaxfzp.jpg",
                 badges: [],
                 createdPlatforms: [],
                 bookmarkedPlatforms: [],
