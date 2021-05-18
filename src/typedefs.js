@@ -138,6 +138,7 @@ const typeDefs = gql`
         createdPlatforms: [Int]
         bookmarkedPlatforms: [Int]
         playedPlatforms: [Int]
+        color: String
     }
 
     type Platform{

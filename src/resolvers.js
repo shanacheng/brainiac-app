@@ -54,7 +54,8 @@ const resolvers = {
                 badges: [],
                 createdPlatforms: [],
                 bookmarkedPlatforms: [],
-                playedPlatforms: []
+                playedPlatforms: [],
+                color: 'gray'
             });
             const res = await user.save();
 
