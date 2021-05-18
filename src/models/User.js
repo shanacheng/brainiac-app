@@ -8,7 +8,8 @@ const User = mongoose.model("User",
     badges: [String],
     createdPlatforms: [Number],
     bookmarkedPlatforms: [Number],
-    playedPlatforms: [Number]
+    playedPlatforms: [Number],
+    color: String
     }
 );
 
