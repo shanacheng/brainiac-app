@@ -89,7 +89,7 @@ const resolvers = {
                 token
             }
         },
-        createPlatform: (_, {name, description, creatorName, tags}) => {
+        createPlatform: (_, {name, description, creatorName, tags, photo}) => {
             console.log("hit platform create method")
             var platformID;
             while (true) {
@@ -106,7 +106,7 @@ const resolvers = {
                 games: [],
                 private: true,
                 tags: tags,
-                photo: ""
+                photo: photo
             });
             User.findOneAndUpdate({username: creatorName},{"$push": {createdPlatforms: platformID}}, 
             function(error, success) {
