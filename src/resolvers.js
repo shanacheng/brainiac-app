@@ -109,7 +109,7 @@ const resolvers = {
                 color1: '#FFFEEE',
                 color2: '#D1E9E3',
                 tags: tags,
-                photo: ''
+                photo: photo
             });
             User.findOneAndUpdate({username: creatorName},{"$push": {createdPlatforms: platformID}}, 
             function(error, success) {
