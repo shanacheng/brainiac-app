@@ -73,7 +73,7 @@ const typeDefs = gql`
             platformID: Int!
             color1: String
             color2: String
-        )
+        ): String
         unbookmarkPlatform(
             username: String!
             platformID: Int!

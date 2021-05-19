@@ -8,7 +8,7 @@ const Platform = mongoose.model("Platform",
         games: [Number],
         private: Boolean,
         color1: String,
-        color2: String
+        color2: String,
         photo: String,
         tags: [String]
     }
