@@ -6,7 +6,9 @@ const Platform = mongoose.model("Platform",
         description: String,
         creatorName: String,
         games: [Number],
-        private: Boolean
+        private: Boolean,
+        color1: String,
+        color2: String
     }
 );
 

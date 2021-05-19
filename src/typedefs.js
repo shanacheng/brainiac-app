@@ -141,6 +141,8 @@ const typeDefs = gql`
         creatorName: String!
         games: [Int]
         tags: [String]
+        color1: String
+        color2: String
     }
 
     type Game{

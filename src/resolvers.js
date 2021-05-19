@@ -97,7 +97,9 @@ const resolvers = {
                 creatorName: creatorName,
                 games: [],
                 private: true,
-                tags: []
+                tags: [],
+                color1: '#FFFEEE',
+                color2: '#D1E9E3'
             });
             User.findOneAndUpdate({username: creatorName},{"$push": {createdPlatforms: platformID}}, 
             function(error, success) {
