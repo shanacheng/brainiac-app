@@ -53,6 +53,7 @@ const typeDefs = gql`
             creatorName: String!
             name: String!
             description: String!
+            pictures: [String]
             # private: Boolean
             tags: [String]
         ): String
