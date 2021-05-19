@@ -229,7 +229,7 @@ const resolvers = {
             }
             game = new Game({
                 gameID: gameID,
-                name: "",
+                name: "Untitled Game",
                 description: "", 
                 activities: [],
                 creatorName: creatorName,
