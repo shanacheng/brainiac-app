@@ -151,6 +151,8 @@ const typeDefs = gql`
         description: String!
         creatorName: String!
         games: [Int]
+        color1: String
+        color2: String
         tags: [String],
         photo: String!
     }
