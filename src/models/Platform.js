@@ -9,6 +9,8 @@ const Platform = mongoose.model("Platform",
         private: Boolean,
         color1: String,
         color2: String
+        photo: String,
+        tags: [String]
     }
 );
 
