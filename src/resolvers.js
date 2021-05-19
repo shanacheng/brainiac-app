@@ -5,7 +5,7 @@ const { Activity } = require("./models/Activity");
 const { SECRET_KEY } = require("../config/keys");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken'); 
-
+const {AuthenticationError} = require('apollo-server');
 function generateToken(user) {
     return jwt.sign({
         username: user.username,
@@ -15,6 +15,7 @@ function generateToken(user) {
         expiresIn: '1h'
     })
 }
+
 
 const resolvers = {
     Query: {
@@ -49,11 +50,12 @@ const resolvers = {
                 username: username,
                 email: email,
                 password: newPassword,
-                profilePicture: "",
+                profilePicture: "https://res.cloudinary.com/dkgfsmwvg/image/upload/v1621309258/brainiac_data/pfpdef_qaxfzp.jpg",
                 badges: [],
                 createdPlatforms: [],
                 bookmarkedPlatforms: [],
-                playedPlatforms: []
+                playedPlatforms: [],
+                color: 'gray'
             });
             const res = await user.save();
 
@@ -68,20 +70,27 @@ const resolvers = {
         },
 
         async login(_, {email, password}) {
+            console.log(password)
             console.log(email);
             const user  = await User.findOne({email});
             console.log(user);
-            const token = generateToken(user);
+            console.log('before compare')
+            console.log(password);
+            console.log(user.password);
             const match = await bcrypt.compare(password, user.password);
+            console.log('after')
+            if(!match){
+                console.log('not matching');
+                throw new AuthenticationError('Incorrect Password or Email')
+            }
+            const token = generateToken(user);
             return {
                 ...user._doc,
                 // username,
                 token
             }
         },
-
-
-        createPlatform: (_, {name, description, creatorName}) => {
+        createPlatform: (_, {name, description, creatorName, tags, photo}) => {
             console.log("hit platform create method")
             var platformID;
             while (true) {
@@ -97,9 +106,10 @@ const resolvers = {
                 creatorName: creatorName,
                 games: [],
                 private: true,
-                tags: [],
                 color1: '#FFFEEE',
                 color2: '#D1E9E3'
+                tags: tags,
+                photo: photo
             });
             User.findOneAndUpdate({username: creatorName},{"$push": {createdPlatforms: platformID}}, 
             function(error, success) {
@@ -109,8 +119,8 @@ const resolvers = {
             return platform.save();
         },
 
-        editPlatform: (_, {platformID, name, description, creatorName, private, tags}) => {
-            Platform.findOneAndUpdate({platformID: platformID, creatorName: creatorName}, {"$set" : {name: name, description: description, private: private, tags: tags}}, 
+        editPlatform: (_, {platformID, name, description, creatorName, private, tags, photo}) => {
+            Platform.findOneAndUpdate({platformID: platformID, creatorName: creatorName}, {"$set" : {name: name, description: description, private: private, tags: tags, photo: photo}}, 
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}
@@ -155,17 +165,20 @@ const resolvers = {
             return platformID;
         },
 
-        addPlayedPlatform: (_, {username,platformID}) => {
-            User.findOneAndUpdate({username: username}, {"$push": {playedPlatforms: platformID}},
-            function(error, success) {
-                if (error) {console.log(error)}
-                else {console.log(success)}
-            });
+        async addPlayedPlatform(_, {username,platformID}){
+            const user = await User.findOne({username: username});
+            if (user.playedPlatforms.includes(platformID) == false) {
+                User.findOneAndUpdate({username: username}, {"$push": {playedPlatforms: platformID}},
+                function(error, success) {
+                    if (error) {console.log(error)}
+                    else {console.log(success)}
+                });
+            }
             return platformID;
         },
 
-        saveChanges: (_, {email, name, username}) => {
-            User.findOneAndUpdate({email: email}, {"$set" : {name: name, username: username}}, 
+        saveChanges: (_, {email, name, username, profilePicture}) => {
+            User.findOneAndUpdate({email: email}, {"$set" : {name: name, username: username, profilePicture: profilePicture}}, 
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}
@@ -173,8 +186,20 @@ const resolvers = {
             return "";
         },
 
-        confirmPasswordChange: (_, {password}) => {
-            User.findOneAndUpdate({email: email}, {"$set" : {password: password}},
+
+        editColor: (_, {email, color}) => {
+            User.findOneAndUpdate({email: email}, {"$set" : {color: color}}, 
+            function(error, success) {
+                if (error) {console.log(error)}
+                else {console.log(success)}
+            });
+            return "";
+        },
+
+        async confirmPasswordChange(_, {email, password}){
+            const newPassword = await bcrypt(password, 12);
+            User.findOneAndUpdate({email: email}, {"$set" : {password: newPassword}},
+
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}
@@ -223,14 +248,14 @@ const resolvers = {
                 if (error) {console.log(error)}
                 else {console.log(success)}
             });
-            Platform.findOneAndUpdate({platformID: platformID}, {"$pull" : {gameID: gameID}},
+            Platform.findOneAndUpdate({platformID: platformID}, {"$pull" : {games: gameID}},
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}
             });
         },
 
-        addActivity: (_, {type, gameID}) => {
+        addActivity: (_, {type, gameID, platformID}) => {
             while (true) {
                 activityID = Math.floor(Math.random() * 100000000);
                 console.log(gameID);
@@ -239,6 +264,8 @@ const resolvers = {
             }
             activity = new Activity({
                 activityID: activityID, 
+                parentPlatform: platformID,
+                parentGame: gameID,
                 type: type, 
                 data: [],
                 colors: ["white", "white", "white"],
@@ -273,7 +300,7 @@ const resolvers = {
         },
 
         editMusic: (_, {activityID, music}) => {
-            Activity.findOneAndUpdate({activityID: activityID}, {"$set": {music: music}},
+            Activity.findOneAndUpdate({activityID: activityID}, {"$xset": {music: music}},
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}
@@ -294,22 +321,22 @@ const resolvers = {
                     if (error) {console.log(error)}
                     else {console.log(success)}
                 });
-            Game.findOneAndUpdate({platformID: platformID}, {"$pull" : {gameID: gameID}},
+            Game.findOneAndUpdate({gameID: gameID}, {"$pull" : {activities: activityID}},
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}
             });
         },
 
-        removeActivityCard: (_, {activityID, index}) => {
+        async removeActivityCard(_, {activityID, index}){
             activityIndex = "data." + index.toString();
             console.log(activityIndex);
-            Activity.findOneAndUpdate({activityID: activityID}, {"$unset": {activityIndex: index}},
-                function(error, success) {
-                    if (error) {console.log(error)}
-                    else {console.log(success)}
-                });
-            Activity.findOneAndUpdate({activityID: activityID}, {"$pull": {data: null}},
+            const activity = await Activity.findOne({activityID: activityID});
+            var data = activity.data;
+            data.splice(index, 1);
+            const updated = data;
+            console.log("--------updated-------")
+            Activity.findOneAndUpdate({activityID: activityID}, {"$set": {data: updated}},
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}

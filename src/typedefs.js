@@ -27,14 +27,17 @@ const typeDefs = gql`
             name: String!
             description: String!
             creatorName: String!
+            tags: [String]
+            photo: String!
             ): Platform!
         editPlatform(
             platformID: Int!
-            name: String
-            description: String
-            creatorName: String
-            private: Boolean
+            name: String!
+            description: String!
+            creatorName: String!
+            private: Boolean!
             tags: [String]
+            photo: String!
         ): String
         deletePlatform(
             platformID:Int!
@@ -60,6 +63,7 @@ const typeDefs = gql`
         addActivity(
             type: String!
             gameID: Int!
+            platformID: Int!
         ): Activity!
         bookmarkPlatform(
             username: String!
@@ -77,8 +81,14 @@ const typeDefs = gql`
             email: String!
             username: String
             name: String
+            profilePicture: String
+        ): String
+        editColor(
+            email: String!
+            color: String
         ): String
         confirmPasswordChange(
+            email: String!
             password: String
         ):String
         addActivityCard(
@@ -132,6 +142,7 @@ const typeDefs = gql`
         createdPlatforms: [Int]
         bookmarkedPlatforms: [Int]
         playedPlatforms: [Int]
+        color: String
     }
 
     type Platform{
@@ -140,9 +151,10 @@ const typeDefs = gql`
         description: String!
         creatorName: String!
         games: [Int]
-        tags: [String]
         color1: String
         color2: String
+        tags: [String],
+        photo: String!
     }
 
     type Game{
@@ -158,6 +170,8 @@ const typeDefs = gql`
 
     type Activity{
         activityID: Int!
+        parentPlatform: Int!
+        parentGame: Int!
         type: String!
         data: [[String]]
         colors: [String]
