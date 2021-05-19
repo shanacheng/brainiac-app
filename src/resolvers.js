@@ -129,7 +129,10 @@ const resolvers = {
         },
 
         editPlatformColors: (_, {platformID, color1, color2}) => {
-            Platform.findOneAndUpdate({platformID: platformID}, {"set" : {color1: color1, color2: color2}}, 
+            console.log("hello")
+            console.log(color1)
+            console.log(color2)
+            Platform.findOneAndUpdate({platformID: platformID}, {"$set" : {color1: color1, color2: color2}}, 
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}
