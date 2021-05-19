@@ -245,8 +245,8 @@ const resolvers = {
             return game.save();
         },
 
-        editGame: (_, {gameID, parentPlatform, name, description, creatorName, tags}) => {
-           Game.findOneAndUpdate({gameID: gameID, parentPlatform: parentPlatform, creatorName: creatorName}, {"$set" : {name: name, description: description, tags: tags}}, 
+        editGame: (_, {gameID, parentPlatform, name, description, creatorName, tags, pictures}) => {
+           Game.findOneAndUpdate({gameID: gameID, parentPlatform: parentPlatform, creatorName: creatorName}, {"$set" : {name: name, description: description, tags: tags, pictures: pictures}}, 
             function(error, success) {
                 if (error) {console.log(error)}
                 else {console.log(success)}
