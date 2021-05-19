@@ -128,6 +128,15 @@ const resolvers = {
             return "";
         },
 
+        editPlatformColors: (_, {platformID, color1, color2}) => {
+            Platform.findOneAndUpdate({platformID: platformID}, {"set" : {color1: color1, color2: color2}}, 
+            function(error, success) {
+                if (error) {console.log(error)}
+                else {console.log(success)}
+            });
+            return "";
+        },
+
         deletePlatform: (_, {username, platformID}) => {
             Platform.findOneAndDelete({platformID: platformID}, 
             function(error, success) {
